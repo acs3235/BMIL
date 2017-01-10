@@ -1,0 +1,10 @@
+function R = R_model_diff(mu_a, mu_s, f)
+%f can be a vector, gamma and mu must be scalars
+
+utr = mu_a + mu_s
+
+ap = mu_s/utr
+
+R = 
+
+end
