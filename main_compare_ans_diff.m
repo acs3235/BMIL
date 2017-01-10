@@ -26,8 +26,11 @@ s		= 0.01;     % Source Radius [cm]
 g       = 0.9;      % scattering anisotropy
 
 %% Parameters (musp gamma muad th)
-musp_v = 1;  % reduced scattering cm^-1
-mu_a  = 1.3:0.1:1.9;     % gamma (actually absorption coefficient right now)
+% musp_v = 1;  % reduced scattering cm^-1
+% mu_a  = 1.3:0.1:1.9;     % cm^-1
+
+musp_v = linspace(0.01,50,3);  % reduced scattering
+mua_v  = linspace(1,50,3);     % absorption
 
 %% 
 H = waitbar(0,'Please Wait...');
@@ -61,8 +64,8 @@ for aa = 1:length(mu_a)
         RsFM_all = [RsFM_all RsFM];
     end
 end
-legendCell = cellstr(num2str(mu_a', 'gamma=%-d'))
-legend(legendCell)
+% legendCell = cellstr(num2str(mu_a', 'gamma=%-d'))
+% legend(legendCell)
 toc
 close(H)
 

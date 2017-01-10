@@ -47,6 +47,7 @@ system('Conv.exe<conv_input.txt')
 %% Compute Results
 dataRr = dlmread('out.Rrc','\t',1,0);
 distance = dataRr(:,1);
+distance
 refl = dataRr(:,2);
 
 diffp = diff(distance);

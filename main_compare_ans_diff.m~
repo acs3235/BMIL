@@ -27,7 +27,7 @@ g       = 0.9;      % scattering anisotropy
 
 %% Parameters (musp gamma muad th)
 musp_v = 1;  % reduced scattering cm^-1
-mu_a  = 1.3:0.1:1.9;     % gamma (actually absorption coefficient right now)
+mu_a  = 1.3:0.1:1.9;     % cm^-1
 
 %% 
 H = waitbar(0,'Please Wait...');
