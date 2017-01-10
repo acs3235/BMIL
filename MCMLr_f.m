@@ -4,7 +4,7 @@
 %Edited by Andrew Stier
 % 10/25/2016
 
-function R = MCMLr_f(mua_e, mua_d, mus, thi, g, f, r)
+function R = MCMLr_f(mua_e, mua_d, mus, thi, g, f, dr, Ndr)
 
 % INPUTS
 %   mua_e   - absorption coefficient for 1 layer, epi abs for 2 layer (cm^-1)
@@ -28,12 +28,12 @@ else
 end
 
 photons     = 1E6;   % Number of photon packets to simulate
-n_above     = 1.452; % Refractive index of the medium above
+n_above     = 1.00; % Refractive index of the medium above
 n_below     = 1.33;  % Refractive index of the medium below
 dz          = 0.001; % Spatial resolution of detection grid, z-direction [cm]
-dr          = 2 * pi; % Spatial resolution of detection grid, r-direction [cm]
+%dr          = 0.001; % Spatial resolution of detection grid, r-direction [cm]
 Ndz         = 100;   % Number of grid elements, z-direction
-Ndr         = 10;  % Number of grid elements, r-direction
+%Ndr         = 100;  % Number of grid elements, r-direction
 Nda         = 30;    % Number of grid elements, angular-direction
 
 create_MCML_input_file('mcml',photons,layers,n_above,n_below,dz,dr,Ndz,Ndr,Nda);
