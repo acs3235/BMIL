@@ -29,8 +29,10 @@ g       = 0.9;      % scattering anisotropy
 % musp_v = 1;  % reduced scattering cm^-1
 % mu_a  = 1.3:0.1:1.9;     % cm^-1
 
-musp_v = linspace(0.01,50,3);  % reduced scattering
-mua_v  = linspace(1,50,3);     % absorption
+% musp_v = linspace(0.01,50,3);  % reduced scattering
+musp_v = 25;
+mu_a  = linspace(1,50,3);     % absorption
+% mu_a = 25;
 
 %% 
 H = waitbar(0,'Please Wait...');
@@ -64,8 +66,13 @@ for aa = 1:length(mu_a)
         RsFM_all = [RsFM_all RsFM];
     end
 end
-% legendCell = cellstr(num2str(mu_a', 'gamma=%-d'))
-% legend(legendCell)
+
+mu_a = [1 1 25.5 25.5 50 50]
+legendCell = cellstr(num2str(mu_a', 'mu_a=%-d'))
+legend(legendCell)
+% legend('MC','Forward Model')
+xlabel('f/mu_sp')
+ylabel('Reflection')
 toc
 close(H)
 
