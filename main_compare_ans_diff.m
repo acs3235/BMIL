@@ -75,10 +75,10 @@ for iteration = 1:length(l_stars)
             %plot(f,RsMC)
             %plot(ratios,RsFM,'--')
             figure(1)
-            semilogy(f,RsFM)
+            semilogy(f,RsMC)
             hold all;
             figure(2)
-            semilogy(f,RsFM+.01,'--')
+            semilogy(f,RsFM,'--')
             hold all;
             RsMC_all = [RsMC_all RsMC];
             RsFM_all = [RsFM_all RsFM];
@@ -99,7 +99,7 @@ toc
 close(H)
 
 %Calculate the l2 error between MC and FM results
-%error = norm(RsMC_all - RsFM_all)
+error = mean(abs(RsMC_all-RsFM_all)./RsFM_all*100)
 
 
 % save LUT.mat LUT musp_v mua_v
