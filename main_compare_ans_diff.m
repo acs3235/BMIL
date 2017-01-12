@@ -1,11 +1,9 @@
 %Simple experiment written by Andrew Stier
 
 % Visualize and compare reflectance calculations made by MC model and
-% by forward model given in McClathy et. al. Optica 3, 613-621 (2016) as a
+% by forward model as a
 % way to verify output of MC model
 
-% Right now MC model is for diffuse scenario, so its output is very wrong.
-% This is as expected.
 
 
 
@@ -76,7 +74,11 @@ for iteration = 1:length(l_stars)
             %plot(ratios,RsMC)
             %plot(f,RsMC)
             %plot(ratios,RsFM,'--')
+            figure(1)
             semilogy(f,RsFM)
+            hold all;
+            figure(2)
+            semilogy(f,RsFM+.01,'--')
             hold all;
             RsMC_all = [RsMC_all RsMC];
             RsFM_all = [RsFM_all RsFM];
@@ -84,17 +86,20 @@ for iteration = 1:length(l_stars)
     end
 end
 
-legendCell = cellstr(num2str(l_stars', 'l_stars=%-d'))
+legendCell = cellstr(num2str(l_stars', 'l^*=%-d'))
 legend(legendCell)
 % legend('MC','Forward Model')
 xlabel('f (mm^-^1)')
 ylabel('Reflection')
 
+L = findobj(1,'type','line');
+copyobj(L,findobj(2,'type','axes'));
+
 toc
 close(H)
 
 %Calculate the l2 error between MC and FM results
-error = norm(RsMC_all - RsFM_all)
+%error = norm(RsMC_all - RsFM_all)
 
 
 % save LUT.mat LUT musp_v mua_v

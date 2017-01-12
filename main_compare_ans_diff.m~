@@ -1,11 +1,9 @@
 %Simple experiment written by Andrew Stier
 
 % Visualize and compare reflectance calculations made by MC model and
-% by forward model given in McClathy et. al. Optica 3, 613-621 (2016) as a
+% by forward model as a
 % way to verify output of MC model
 
-% Right now MC model is for diffuse scenario, so its output is very wrong.
-% This is as expected.
 
 
 
@@ -25,7 +23,7 @@ Ndr     = 10000
 s		= 0.01;     % Source Radius [cm]
 g       = 0.9;      % scattering anisotropy
 
-f = [0:2*pi/(Ndr * dr):3]
+f = [0:.02:1]
 
 %% Parameters (musp gamma muad th)
 % musp_v = 1;  % reduced scattering cm^-1
@@ -39,7 +37,7 @@ f = [0:2*pi/(Ndr * dr):3]
 %%
 %Make musp_v and mu_a arrays 
 
-l_star = [0.25 0.5 1 2 4];
+l_stars = [0.25 0.5 1 2 4];
 
 
 
@@ -57,7 +55,8 @@ RsMC_all = [];
 RsFM_all = [];
 
 %Iterate through paramter combinations
-for iteration in l_star:
+for iteration = 1:length(l_stars)
+    l_star = l_stars(iteration)
     mu_a = 1/(101*l_star);
     musp_v = 100 * mu_a;
     for aa = 1:length(mu_a)
@@ -66,25 +65,28 @@ for iteration in l_star:
     %         LUT(aa,ss) = MCMLr(mua_v(aa),0,musp_v(ss)/(1-g),0,g,f,r);
 
             %Generate reflection values using both MC and FM (forward model)
-            RsMC = MCMLr_f(mu_a(aa),0,musp_v(ss)/(1-g),0,g,f,dr,Ndr);
+            %RsMC = MCMLr_f(mu_a(aa),0,musp_v(ss)/(1-g),0,g,f,dr,Ndr);
+            RsMC = 1
             RsFM = R_model_diff(mu_a(aa),musp_v(ss),f);
 
             %Plot the results
-            %ratios = f./musp_v(ss);
-            ratios = f;
-            plot(ratios,RsMC)
+            ratios = f./musp_v(ss);
+            %plot(ratios,RsMC)
+            %plot(f,RsMC)
+            %plot(ratios,RsFM,'--')
+            semilogy(f,RsFM)
+            semilogy(f,RsFM,'--'
             hold all;
-            plot(ratios,RsFM,'--')
             RsMC_all = [RsMC_all RsMC];
             RsFM_all = [RsFM_all RsFM];
         end
     end
+end
 
-mu_a = [1 1 25.5 25.5 50 50]
-legendCell = cellstr(num2str(mu_a', 'mu_a=%-d'))
+legendCell = cellstr(num2str(l_stars', 'l^*=%-d'))
 legend(legendCell)
 % legend('MC','Forward Model')
-xlabel('f/mu_sp')
+xlabel('f (mm^-^1)')
 ylabel('Reflection')
 
 toc
