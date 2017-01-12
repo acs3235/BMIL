@@ -25,16 +25,23 @@ Ndr     = 10000
 s		= 0.01;     % Source Radius [cm]
 g       = 0.9;      % scattering anisotropy
 
-f = [0:2*pi/(Ndr * dr):3]
+f = [0:.02:1]
 
 %% Parameters (musp gamma muad th)
 % musp_v = 1;  % reduced scattering cm^-1
 % mu_a  = 1.3:0.1:1.9;     % cm^-1
 
 % musp_v = linspace(0.01,50,3);  % reduced scattering
-musp_v = 25;
-mu_a  = linspace(1,50,3);     % absorption
+% musp_v = 25;
+% mu_a  = linspace(1,50,3);     % absorption
 %mu_a = 25;
+
+%%
+%Make musp_v and mu_a arrays 
+
+l_stars = [0.25 0.5 1 2 4];
+
+
 
 %% 
 H = waitbar(0,'Please Wait...');
@@ -50,31 +57,37 @@ RsMC_all = [];
 RsFM_all = [];
 
 %Iterate through paramter combinations
-for aa = 1:length(mu_a)
-    for ss = 1:length(musp_v)
-        waitbar((ss + length(musp_v)*(aa-1))/(length(musp_v)*length(mu_a)),H) %This line for display purposes only
-%         LUT(aa,ss) = MCMLr(mua_v(aa),0,musp_v(ss)/(1-g),0,g,f,r);
-        
-        %Generate reflection values using both MC and FM (forward model)
-        RsMC = MCMLr_f(mu_a(aa),0,musp_v(ss)/(1-g),0,g,f,dr,Ndr);
-        RsFM = R_model_diff(mu_a(aa),musp_v(ss),f);
-        
-        %Plot the results
-        %ratios = f./musp_v(ss);
-        ratios = f;
-        plot(ratios,RsMC)
-        hold all;
-        plot(ratios,RsFM,'--')
-        RsMC_all = [RsMC_all RsMC];
-        RsFM_all = [RsFM_all RsFM];
+for iteration = 1:length(l_stars)
+    l_star = l_stars(iteration)
+    mu_a = 1/(101*l_star);
+    musp_v = 100 * mu_a;
+    for aa = 1:length(mu_a)
+        for ss = 1:length(musp_v)
+            waitbar((ss + length(musp_v)*(aa-1))/(length(musp_v)*length(mu_a)),H) %This line for display purposes only
+    %         LUT(aa,ss) = MCMLr(mua_v(aa),0,musp_v(ss)/(1-g),0,g,f,r);
+
+            %Generate reflection values using both MC and FM (forward model)
+            %RsMC = MCMLr_f(mu_a(aa),0,musp_v(ss)/(1-g),0,g,f,dr,Ndr);
+            RsMC = 1
+            RsFM = R_model_diff(mu_a(aa),musp_v(ss),f);
+
+            %Plot the results
+            ratios = f./musp_v(ss);
+            %plot(ratios,RsMC)
+            %plot(f,RsMC)
+            %plot(ratios,RsFM,'--')
+            semilogy(f,RsFM)
+            hold all;
+            RsMC_all = [RsMC_all RsMC];
+            RsFM_all = [RsFM_all RsFM];
+        end
     end
 end
 
-mu_a = [1 1 25.5 25.5 50 50]
-legendCell = cellstr(num2str(mu_a', 'mu_a=%-d'))
+legendCell = cellstr(num2str(l_stars', 'l_stars=%-d'))
 legend(legendCell)
 % legend('MC','Forward Model')
-xlabel('f/mu_sp')
+xlabel('f (mm^-^1)')
 ylabel('Reflection')
 
 toc
