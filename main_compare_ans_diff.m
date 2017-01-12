@@ -18,10 +18,10 @@ clear all; close all; clc
 % For now, we pass in gamma as if it were mua_v
 
 %% Constants
-dr      = 0.001
-Ndr     = 10000
+dr      = 0.009
+Ndr     = 100
 s		= 0.01;     % Source Radius [cm]
-g       = 0.9;      % scattering anisotropy
+g       = 0.71;      % scattering anisotropy
 
 f = [0:.02:1]
 
@@ -65,8 +65,8 @@ for iteration = 1:length(l_stars)
     %         LUT(aa,ss) = MCMLr(mua_v(aa),0,musp_v(ss)/(1-g),0,g,f,r);
 
             %Generate reflection values using both MC and FM (forward model)
-            %RsMC = MCMLr_f(mu_a(aa),0,musp_v(ss)/(1-g),0,g,f,dr,Ndr);
-            RsMC = 1
+            RsMC = MCMLr_f(10*mu_a(aa),0,10*musp_v(ss)/(1-g),0,g,f,dr,Ndr);
+            %RsMC = 1
             RsFM = R_model_diff(mu_a(aa),musp_v(ss),f);
 
             %Plot the results

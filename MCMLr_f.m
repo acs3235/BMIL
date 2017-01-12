@@ -27,7 +27,7 @@ else
               1.44      mua_d   mus     g       1E9];
 end
 
-photons     = 1E6;   % Number of photon packets to simulate
+photons     = 1E7;   % Number of photon packets to simulate
 n_above     = 1.00; % Refractive index of the medium above
 n_below     = 1.33;  % Refractive index of the medium below
 dz          = 0.001; % Spatial resolution of detection grid, z-direction [cm]
@@ -47,13 +47,9 @@ system('Conv.exe<conv_input.txt')
 %% Compute Results
 dataRr = dlmread('out.Rrc','\t',1,0);
 distance = dataRr(:,1);
-distance
 refl = dataRr(:,2);
-
-diffp = diff(distance);
-dp = diffp(1);
 
 
 for i = 1:length(f)
-    R(i) = 2*pi*sum(distance .* besselj(0,f(i)*distance) .* refl * dp);
+    R(i) = 2*pi*sum(distance .* besselj(0,f(i)*distance) .* refl * dr);
 end
