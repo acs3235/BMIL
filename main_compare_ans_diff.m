@@ -18,7 +18,7 @@ clear all; close all; clc
 % For now, we pass in gamma as if it were mua_v
 
 %% Constants
-dr      = 0.009
+dr      = 0.009 %cm
 Ndr     = 100
 s		= 0.01;     % Source Radius [cm]
 g       = 0.71;      % scattering anisotropy
@@ -37,9 +37,9 @@ f = [0:.02:1]
 %%
 %Make musp_v and mu_a arrays 
 
-l_stars = [0.25 0.5 1 2 4];
+% l_stars = [0.25 0.5 1 2 4];
 
-
+l_stars = 0.25
 
 %% 
 H = waitbar(0,'Please Wait...');
@@ -57,15 +57,15 @@ RsFM_all = [];
 %Iterate through paramter combinations
 for iteration = 1:length(l_stars)
     l_star = l_stars(iteration)
-    mu_a = 1/(101*l_star);
-    musp_v = 100 * mu_a;
+    mu_a = 1/(101*l_star)
+    musp_v = 100 * mu_a
     for aa = 1:length(mu_a)
         for ss = 1:length(musp_v)
             waitbar((ss + length(musp_v)*(aa-1))/(length(musp_v)*length(mu_a)),H) %This line for display purposes only
     %         LUT(aa,ss) = MCMLr(mua_v(aa),0,musp_v(ss)/(1-g),0,g,f,r);
 
             %Generate reflection values using both MC and FM (forward model)
-            RsMC = MCMLr_f(10*mu_a(aa),0,10*musp_v(ss)/(1-g),0,g,f,dr,Ndr);
+            [RsMC,distance,refl] = MCMLr_f(10*mu_a(aa),0,10*musp_v(ss)/(1-g),0,g,f,dr,Ndr);
             %RsMC = 1
             RsFM = R_model_diff(mu_a(aa),musp_v(ss),f);
 
@@ -74,6 +74,9 @@ for iteration = 1:length(l_stars)
             %plot(ratios,RsMC)
             %plot(f,RsMC)
             %plot(ratios,RsFM,'--')
+            figure(3)
+            semilogy(distance,refl)
+            hold all;
             figure(1)
             semilogy(f,RsMC)
             hold all;
@@ -92,8 +95,8 @@ legend(legendCell)
 xlabel('f (mm^-^1)')
 ylabel('Reflection')
 
-L = findobj(1,'type','line');
-copyobj(L,findobj(2,'type','axes'));
+% L = findobj(1,'type','line');
+% copyobj(L,findobj(2,'type','axes'));
 
 toc
 close(H)
@@ -101,5 +104,8 @@ close(H)
 %Calculate the l2 error between MC and FM results
 error = mean(abs(RsMC_all-RsFM_all)./RsFM_all*100)
 
+mu_as = 1./(101*l_stars)
+musp_v = 100 * mu_as
 
 % save LUT.mat LUT musp_v mua_v
+

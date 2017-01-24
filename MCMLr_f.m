@@ -4,7 +4,7 @@
 %Edited by Andrew Stier
 % 10/25/2016
 
-function R = MCMLr_f(mua_e, mua_d, mus, thi, g, f, dr, Ndr)
+function [R,distance,refl] = MCMLr_f(mua_e, mua_d, mus, thi, g, f, dr, Ndr)
 
 % INPUTS
 %   mua_e   - absorption coefficient for 1 layer, epi abs for 2 layer (cm^-1)
@@ -22,9 +22,10 @@ function R = MCMLr_f(mua_e, mua_d, mus, thi, g, f, dr, Ndr)
 %             n         mua     mus     g       d
 if thi == 0
     layers = [1.33      mua_e   mus     g       1E9];
+    fprintf('debug 1')
 else
-    layers = [1.44      mua_e   mus     g       thi;
-              1.44      mua_d   mus     g       1E9];
+    layers = [1.33      mua_e   mus     g       thi;
+              1.33      mua_d   mus     g       1E9];
 end
 
 photons     = 1E7;   % Number of photon packets to simulate
@@ -48,6 +49,10 @@ system('Conv.exe<conv_input.txt')
 dataRr = dlmread('out.Rrc','\t',1,0);
 distance = dataRr(:,1);
 refl = dataRr(:,2);
+
+% figure(3)
+% 
+% plot(distance,refl)
 
 
 for i = 1:length(f)
