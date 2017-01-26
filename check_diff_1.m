@@ -18,10 +18,13 @@ clear all; close all; clc
 % For now, we pass in gamma as if it were mua_v
 
 %% Constants
-dr      = 0.009; %cm
+dr      = 0.009; %mm
 Ndr     = 100;
-s		= 0.01;     % Source Radius [cm]
+s		= 0.1;     % Source Radius [mm]
 g       = 0.8;      % scattering anisotropy
+
+dr_cm = dr/10;
+s_cm = s/10;
 
 f = [0:.02:1];
 
@@ -48,7 +51,7 @@ H = waitbar(0,'Please Wait...');
 tic
 
 %initialize a file where you give all the row names
-create_CONV_input_file(s)
+create_CONV_input_file(s_cm)
 
 %Instead of LUT, just storing all values in simple array for now
 RsMC_all = [];
@@ -59,6 +62,8 @@ for iteration = 1:length(l_stars)
     l_star = l_stars(iteration);
     mu_a = 1/(101*l_star);
     musp_v = 100 * mu_a;
+    mu_a_cm = mu_a*10 %mm^-1 -> cm^-1
+    musp_v_cm = musp_v*10 %mm^-1 -> cm^-1
     for aa = 1:length(mu_a)
         for ss = 1:length(musp_v)
             waitbar((ss + length(musp_v)*(aa-1))/(length(musp_v)*length(mu_a)),H) %This line for display purposes only
@@ -66,11 +71,12 @@ for iteration = 1:length(l_stars)
 
             %Generate reflection values using both MC and FM (forward model)
 %             [RsMC,distance,refl] = MCMLr_f(10*mu_a(aa),0,10*musp_v(ss)/(1-g),0,g,f,dr,Ndr);
-            [RsMC,distance,refl] = MCMLr_f(10*mu_a(aa),0,10*musp_v(ss),0,g,f,dr,Ndr);
+            [RsMC,distance_cm,refl] = MCMLr_f(mu_a_cm(aa),0,musp_v_cm(ss),0,g,f,dr_cm,Ndr);
 
             %Plot reflectance
             figure(3)
-            plot(distance,refl)
+            distance_mm = distance_cm * 10
+            plot(distance_mm,refl)
             xlabel('distance (mm)')
             ylabel('reflectance')
             hold all;
@@ -102,14 +108,15 @@ for iteration = 1:length(l_stars)
     end
 end
 
-legendCell = cellstr(num2str(l_stars', 'l^*=%-d'))
-legend(legendCell)
+% legendCell = cellstr(num2str(l_stars', 'l^*=%-d'))
+% legend(legendCell)
 % legend('MC','Forward Model')
 xlabel('f (mm^-^1)')
 ylabel('Reflection')
 
-% L = findobj(1,'type','line');
-% copyobj(L,findobj(2,'type','axes'));
+L = findobj(1,'type','line');
+copyobj(L,findobj(2,'type','axes'));
+legend('Forward Model','MC')
 
 toc
 close(H)

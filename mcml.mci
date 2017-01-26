@@ -6,7 +6,7 @@
 ### Specify data for run 1
 mcml.mco A		# output filename, ASCII/Binary
 10000000			# No. of photons
-0.001 0.009		# dz, dr
+0.001 0.0009		# dz, dr
 100 100 30		# No. of dz, dr & da
 
 1			# No. of layers
