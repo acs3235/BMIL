@@ -7,7 +7,7 @@
 mcml.mco A		# output filename, ASCII/Binary
 10000000			# No. of photons
 0.001 0.0009		# dz, dr
-100 100 30		# No. of dz, dr & da
+100 667 30		# No. of dz, dr & da
 
 1			# No. of layers
 1.000000		# n for medium above

@@ -75,13 +75,29 @@ end
 distance = cell2mat(raw(:, 1));
 refl = cell2mat(raw(:, 2));
 
+normalized_r = refl./max(refl)
+figure(3)
+plot(distance,normalized_r)
+
 for f = [0:.2:1]
     figure(5)
-    y = distance .* besselj(0,f*distance) .* refl
+    y = distance .* besselj(0,2*pi*f*distance) .* refl
     plot(distance, y)
     hold all;
 end
 
+f = [0:.2:1]
+dr = diff(distance)
+dr = dr(1)
+
+for i = 1:length(f)
+    Rtest(i) = 2*pi*sum(distance .* besselj(0,2*pi*f(i)*distance) .* refl * dr);
+end
+
+figure(2)
+plot(f,Rtest)
+
+Rtest
 
 %% Clear temporary variables
 clearvars filename delimiter formatSpec fileID dataArray ans raw col numericData rawData row regexstr result numbers invalidThousandsSeparator thousandsRegExp me;

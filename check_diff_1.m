@@ -19,7 +19,7 @@ clear all; close all; clc
 
 %% Constants
 dr      = 0.009; %mm
-Ndr     = 100;
+Ndr     = round(6/dr)
 s		= 0.1;     % Source Radius [mm]
 g       = 0.8;      % scattering anisotropy
 
@@ -64,19 +64,22 @@ for iteration = 1:length(l_stars)
     musp_v = 100 * mu_a;
     mu_a_cm = mu_a*10 %mm^-1 -> cm^-1
     musp_v_cm = musp_v*10 %mm^-1 -> cm^-1
+    g
     for aa = 1:length(mu_a)
         for ss = 1:length(musp_v)
             waitbar((ss + length(musp_v)*(aa-1))/(length(musp_v)*length(mu_a)),H) %This line for display purposes only
     %         LUT(aa,ss) = MCMLr(mua_v(aa),0,musp_v(ss)/(1-g),0,g,f,r);
 
             %Generate reflection values using both MC and FM (forward model)
-%             [RsMC,distance,refl] = MCMLr_f(10*mu_a(aa),0,10*musp_v(ss)/(1-g),0,g,f,dr,Ndr);
+%             [RsMC,distance_cm,refl] = MCMLr_f(mu_a_cm(aa),0,musp_v_cm(ss)/(1-g),0,g,f,dr_cm,Ndr);
             [RsMC,distance_cm,refl] = MCMLr_f(mu_a_cm(aa),0,musp_v_cm(ss),0,g,f,dr_cm,Ndr);
 
             %Plot reflectance
             figure(3)
             distance_mm = distance_cm * 10
-            plot(distance_mm,refl)
+            normalized_r = refl./1E7
+%             plot(distance_mm,normalized_r)
+            plot(distance_mm, refl)
             xlabel('distance (mm)')
             ylabel('reflectance')
             hold all;
@@ -100,7 +103,7 @@ for iteration = 1:length(l_stars)
             semilogy(f,RsMC)
             hold all;
             figure(2)
-            semilogy(f,RsFM,'--')
+            plot(f,RsFM,'--')
             hold all;
             RsMC_all = [RsMC_all RsMC];
             RsFM_all = [RsFM_all RsFM];
