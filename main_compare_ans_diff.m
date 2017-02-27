@@ -75,7 +75,7 @@ for iteration = 1:length(l_stars)
             %plot(f,RsMC)
             %plot(ratios,RsFM,'--')
             figure(3)
-            semilogy(distance,refl)
+            plot(distance,refl./sum(refl))
             hold all;
             figure(1)
             semilogy(f,RsMC)
