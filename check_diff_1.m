@@ -40,9 +40,9 @@ f = [0:.02:1];
 %%
 %Make musp_v and mu_a arrays 
 
-% l_stars = [0.25 0.5 1 2 4];
+l_stars = [0.25 0.5 1 2 4];
 
-l_stars = 0.25;
+% l_stars = 0.25;
 
 %% 
 H = waitbar(0,'Please Wait...');
@@ -126,9 +126,10 @@ close(H)
 
 %Calculate the l2 error between MC and FM results
 error = mean(abs(RsMC_all-RsFM_all)./RsFM_all*100)
-% 
-% mu_as = 1./(101*l_stars)
-% musp_v = 100 * mu_as
+
+mu_as = 1./(101*l_stars)
+musp_v = 100 * mu_as
+
 
 % save LUT.mat LUT musp_v mua_v
 
