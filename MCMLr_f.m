@@ -54,7 +54,8 @@ refl = dataRr(:,2);
 % 
 % plot(distance,refl)
 
-
+refl = refl./max(refl)
+    
 for i = 1:length(f)
     R(i) = 2*pi*sum(distance .* besselj(0,2*pi*f(i)*distance) .* refl * dr);
 end

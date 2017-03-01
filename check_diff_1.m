@@ -103,7 +103,7 @@ for iteration = 1:length(l_stars)
             semilogy(f,RsMC)
             hold all;
             figure(2)
-            plot(f,RsFM,'--')
+            semilogy(f,RsFM,'--')
             hold all;
             RsMC_all = [RsMC_all RsMC];
             RsFM_all = [RsFM_all RsFM];
@@ -111,15 +111,20 @@ for iteration = 1:length(l_stars)
     end
 end
 
-% legendCell = cellstr(num2str(l_stars', 'l^*=%-d'))
-% legend(legendCell)
-% legend('MC','Forward Model')
+figure(1)
 xlabel('f (mm^-^1)')
-ylabel('Reflection')
+ylabel('Reflection MC')
+
+figure(2)
+xlabel('f (mm^-^1)')
+ylabel('Reflection FM')
+
 
 L = findobj(1,'type','line');
 copyobj(L,findobj(2,'type','axes'));
-legend('Forward Model','MC')
+
+axis([0 1 .01 1])
+
 
 toc
 close(H)

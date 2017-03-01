@@ -23,7 +23,7 @@ for i = 2:2:10
     Rp = cell2mat(raw(:, i))
     
     figure(1)
-    semilogy(d,Rp)
+    plot(d,Rp)
     hold all;
     
     figure(2)
