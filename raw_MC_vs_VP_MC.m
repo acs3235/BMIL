@@ -3,6 +3,10 @@
 % output of the Virtual Photonics forward model, and the output of the VP 
 % MCM model to compare them. 
 
+% Raw MCM normalized by sum
+% VP MCM normalized by sum
+% VP forward model not normalized
+
 clear all; close all; clc
 
 %Plot raw MCM output
@@ -18,24 +22,28 @@ plot(r,Rp2)
 
 sum(Rp2)
 
-
-%%
-
 Rp2 = Rp2(1:end-1)
 r_mm = r_mm(1:end-1)
 
-plot(r_mm,Rp2./sum(Rp2))
+plot(r_mm,Rp2, 'b')
+hold all;
+
+plot(r_mm,Rp2./max(Rp2), 'b--')
+plot(r_mm,Rp2./sum(Rp2), 'b:')
+
 xlabel('radius from source (mm)')
 ylabel('refl')
 
+axis([0 4 0 1])
 %%
 %Plot VP MCM output
-hold all;
 
 rawVPMC = importfile('MCsim.txt')
 d = cell2mat(rawVPMC(:, 3))
 Rp = cell2mat(rawVPMC(:, 4))
-plot(d,Rp./sum(Rp))
+plot(d,Rp,'r')
+plot(d,Rp./max(Rp),'r--')
+plot(d/Rp./sum(Rp),'r:')
 
 xlabel('radius from source (mm)')
 ylabel('refl')
@@ -52,11 +60,14 @@ dr = dr(1)
 %%
 %Plot VP forward model
 Rp = cell2mat(raw(:, 2))
-plot(d,Rp)
+plot(d,Rp,'g')
+plot(d,Rp./max(Rp),'g--')
+plot(d,Rp./sum(Rp),'g:')
 hold all;
 title('VP forward model')
 xlabel('radius from source (mm)')
 ylabel('refl')
 
-legend('normalized raw MC', 'VP MC', 'VP forward model')
+legend('raw MC','MC max', 'MC sum', 'VP FM', 'VP FM max', 'VP FM sum', 'VP MCM', 'VP MCM max', 'VP MCM sum')
+axis([0 4 0 1])
 
