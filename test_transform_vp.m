@@ -21,6 +21,7 @@ f = cell2mat(raw2(:, 1))
 %iterate through the r vs. d files for each set of parameters
 for i = 2:2:10
     Rp = cell2mat(raw(:, i))
+    %Rp = Rp./max(Rp)    
     
     figure(1)
     plot(d,Rp)
@@ -28,10 +29,12 @@ for i = 2:2:10
     
     figure(2)
     
-    for i = 1:length(f)
-        Rf(i) = 2*pi*sum(d .* besselj(0,2*pi*f(i)*d) .* Rp * dr);
-    end
+%     for i = 1:length(f)
+%         Rf(i) = 2*pi*sum(d .* besselj(0,2*pi*f(i)*d) .* Rp * dr);
+%     end
     
+    Rf = spatial_transform(f,Rp,d,dr)
+
     semilogy(f,Rf)
     hold all;
     

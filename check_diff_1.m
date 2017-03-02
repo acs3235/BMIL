@@ -72,8 +72,12 @@ for iteration = 1:length(l_stars)
 
             %Generate reflection values using both MC and FM (forward model)
 %             [RsMC,distance_cm,refl] = MCMLr_f(mu_a_cm(aa),0,musp_v_cm(ss)/(1-g),0,g,f,dr_cm,Ndr);
-            [RsMC,distance_cm,refl] = MCMLr_f(mu_a_cm(aa),0,musp_v_cm(ss),0,g,f,dr_cm,Ndr);
+            [distance_cm,refl] = MCMLr_r(mu_a_cm(aa),0,musp_v_cm(ss),0,g,f,dr_cm,Ndr);
 
+            refl = refl./max(refl)
+            
+            RsMC = spatial_transform(f, refl, distance_cm * 10, dr_cm * 10)
+            
             %Plot reflectance
             figure(3)
             distance_mm = distance_cm * 10
