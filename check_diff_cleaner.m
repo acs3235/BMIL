@@ -16,8 +16,8 @@ clear all; close all; clc
 
 
 %% Constants
-dr      = 0.009; %mm
-Ndr     = round(6/dr)
+dr      = 0.009 * 10; %mm
+Ndr     = round(50/dr)
 s		= 0.1;     % Source Radius [mm]
 g       = 0.71;      % scattering anisotropy
 
@@ -63,11 +63,14 @@ for iteration = 1:length(l_stars)
 
 
     %Calculate RsMC
-    RsMC = 2 * pi * spatial_transform2(f, refl, distance_cm * 10)
-
+    %RsMC = spatial_transform2(f, refl, distance_cm * 10)
+    RsMC = ht(refl,distance_cm * 10,2*pi*f)./(2*pi);
     
     %Calculate RsFM
     RsFM = R_model_diff(mu_a,musp_v,f);
+    
+%     RsMC = RsMC./max(RsMC);
+%     RsFM = RsFM./max(RsFM);
 
     %Plot both
     figure(1)
@@ -90,6 +93,6 @@ ylabel('Reflection FM')
 L = findobj(1,'type','line');
 copyobj(L,findobj(2,'type','axes'));
 
-axis([0 1 .01 1])
+%axis([0 1 .01 1])
 
 
