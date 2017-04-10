@@ -63,7 +63,7 @@ for iteration = 1:length(l_stars)
 
 
     %Calculate RsMC
-    RsMC = spatial_transform(f, refl, distance_cm * 10, dr_cm * 10)
+    RsMC = 2 * pi * spatial_transform2(f, refl, distance_cm * 10)
 
     
     %Calculate RsFM
