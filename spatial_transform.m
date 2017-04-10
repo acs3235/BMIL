@@ -1,8 +1,8 @@
 %Andrew Stier
 %Based off of equation from (cite paper)
 
-function Rf = spatial_transform(f,Rp,d,dr)
+function R = spatial_transform(f, refl, distance, dr)
 
-for i = 1:length(f)
-    Rf(i) = 2*pi*sum(d .* besselj(0,2*pi*f(i)*d) .* Rp * dr);
+for i = 1:length(f) 
+    R(i) = 2*pi*sum(distance .* besselj(0,2*pi*f(i)*distance) .* refl * dr);
 end

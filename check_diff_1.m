@@ -40,9 +40,9 @@ f = [0:.02:1];
 %%
 %Make musp_v and mu_a arrays 
 
-l_stars = [0.25 0.5 1 2 4];
+% l_stars = [0.25 0.5 1 2 4];
 
-% l_stars = 0.25;
+l_stars = 0.25;
 
 %% 
 H = waitbar(0,'Please Wait...');
@@ -63,7 +63,9 @@ for iteration = 1:length(l_stars)
     mu_a = 1/(101*l_star);
     musp_v = 100 * mu_a;
     mu_a_cm = mu_a*10 %mm^-1 -> cm^-1
+    mu_a_cm 
     musp_v_cm = musp_v*10 %mm^-1 -> cm^-1
+    musp_v_cm
     g
     for aa = 1:length(mu_a)
         for ss = 1:length(musp_v)
