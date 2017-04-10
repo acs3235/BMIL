@@ -1,3 +1,6 @@
+%Andrew Stier
+%Based off of equation from (cite paper)
+
 function R = spatial_transform(f, refl, distance, dr)
 
 for i = 1:length(f) 
