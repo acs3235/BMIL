@@ -19,7 +19,7 @@ clear all; close all; clc
 dr      = 0.009; %mm
 Ndr     = round(6/dr)
 s		= 0.1;     % Source Radius [mm]
-g       = 0.8;      % scattering anisotropy
+g       = 0.9;      % scattering anisotropy
 
 dr_cm = dr/10;
 s_cm = s/10;
@@ -55,8 +55,8 @@ for iteration = 1:length(l_stars)
     mu_a_cm = mu_a*10 %mm^-1 -> cm^-1
     musp_v_cm = musp_v*10 %mm^-1 -> cm^-1
 
-    %[distance_cm_gpu,refl_gpu] = MCMLr_r(mu_a_cm,0,musp_v_cm,0,g,f,dr_cm,Ndr);
-    [distance_cm_gpu,refl_gpu] = get_mco(mu_a_cm,0,musp_v_cm,0,g,f,dr_cm,Ndr);
+    [distance_cm_gpu,refl_gpu] = MCMLr_r(mu_a_cm,0,musp_v_cm,0,g,dr_cm,Ndr);
+    %[distance_cm_gpu,refl_gpu] = get_mco(mu_a_cm,0,musp_v_cm,0,g,f,dr_cm,Ndr);
     
     %Plot R vs. d
     figure(1)

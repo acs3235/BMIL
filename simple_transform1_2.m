@@ -1,15 +1,18 @@
 clear all; close all; clc
 
-M = 50;
+M = 500;
+dr = .1;
 
 % r      Radial positions [m]          {0:numel(h)-1}
 % k      Spatial frequencies [rad/m]   {pi/numel(h)*(0:numel(h)-1)}
 
-r = [0:0.05:M-1];
+r = [0:dr:M-1];
 
 L = length(r);
 
-k = r * 2*pi/M;
+% k = r * 2*pi/M;
+
+k = linspace(0,6,100);
 
 a = 1;
 

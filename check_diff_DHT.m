@@ -16,9 +16,30 @@ clear all; close all; clc
 
 
 %% Constants
-dr      = 1; %mm
+n=0; %order
+N=256 * 6; %number of points
 
-Ndr     = 3000;
+zeros=besselzero(n,N,1);
+yMatrix=YmatrixAssembly(n,N,zeros);
+
+% let's define the space limitation. 
+R=315*5; 
+
+
+%the function that has to be transformed needs to be discretized at
+%specific sample points. this can be achieved by using the spaceSampler
+%function
+samplePointsSpaceDomain=spaceSampler(R, zeros);
+
+Ndr = length(samplePointsSpaceDomain);
+
+%%
+dr = diff(samplePointsSpaceDomain);
+dr = dr(1)
+
+scalingFactor=R^2/zeros(N);
+
+
 s		= 0.1;     % Source Radius [mm]
 g       = 0.71;      % scattering anisotropy
 
@@ -51,20 +72,17 @@ for iteration = 1:length(l_stars)
     mu_a_cm = mu_a*10 %mm^-1 -> cm^-1
     musp_v_cm = musp_v*10 %mm^-1 -> cm^-1
 
-
-%     dataRr = dlmread('out.Rrc','\t',1,0);
-%     distance_cm = dataRr(:,1);
-%     refl = dataRr(:,2);
-
-%    f = 1 /(Ndr * dr) * [0:Ndr - 1];
     
     [distance_cm,refl] = MCMLr_r(mu_a_cm,0,musp_v_cm,0,g,dr_cm,Ndr);
+    
+    size(distance_cm)
+    size(refl)
+    
+    %%
     
     %Plot R vs. d
     figure(3)
     distance_mm = distance_cm * 10;
-    %f = 2*pi /(Ndr) * distance_mm;
-    f = distance_mm./(Ndr * dr^2);
     
     
     
@@ -75,9 +93,12 @@ for iteration = 1:length(l_stars)
 
 
     %Calculate RsMC
-    RsMC = 2*pi*spatial_transform2(f, refl, distance_cm * 10);
-%   RsMC = ht(refl,distance_cm * 10,2*pi*f)./(2*pi);
-
+    %RsMC = 2 * pi * spatial_transform2(f, refl, distance_cm * 10)
+    %RsMC = ht(refl,distance_cm * 10,2*pi*f)./(2*pi);
+    %the transform is then performed by:
+    RsMC = yMatrix*refl*scalingFactor;
+    
+    f = freqSampler(R,zeros);
     
     %Calculate RsFM
     RsFM = R_model_diff(mu_a,musp_v,f);
@@ -86,15 +107,13 @@ for iteration = 1:length(l_stars)
 %     RsFM = RsFM./max(RsFM);
 
     %Plot both
-    
+    figure(1)
+    semilogy(f,RsMC)
+    hold all;
     figure(2)
     semilogy(f,RsFM,'--')
     hold all;
 end
-
-figure(1)
-semilogy(f,RsMC)
-hold all;
 
 figure(1)
 xlabel('f (mm^-^1)')
@@ -108,6 +127,6 @@ ylabel('Reflection FM')
 L = findobj(1,'type','line');
 copyobj(L,findobj(2,'type','axes'));
 
-axis([0 1 .01 1])
+%axis([0 1 .01 1])
 
 
