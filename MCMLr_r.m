@@ -4,7 +4,7 @@
 %Edited by Andrew Stier
 % 10/25/2016
 
-function [distance,refl] = MCMLr_f(mua_e, mua_d, mus, thi, g, f, dr, Ndr)
+function [distance,refl] = MCMLr_r(mua_e, mua_d, mus, thi, g, dr, Ndr)
 
 % INPUTS
 %   mua_e   - absorption coefficient for 1 layer, epi abs for 2 layer (cm^-1)
