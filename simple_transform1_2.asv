@@ -1,7 +1,6 @@
 clear all; close all; clc
 
-M = 500;
-dr = .1;
+R = 500;
 
 % r      Radial positions [m]          {0:numel(h)-1}
 % k      Spatial frequencies [rad/m]   {pi/numel(h)*(0:numel(h)-1)}
@@ -27,13 +26,9 @@ Y = 2 * pi * a./((k.^2 + a^2).^(3/2));
 semilogy(k,Y)
 hold all;
 
-size(y)
-size(r)
-size(k)
+
 
 Y2 = ht(y,r,k);
-
-%%
 
 % Y3 = spatial_transform2(k./(2*pi),y,r)
 

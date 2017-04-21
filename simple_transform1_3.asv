@@ -1,18 +1,11 @@
 clear all; close all; clc
 
-M = 500;
-dr = .1;
+R = 500;
+L = 500;
 
-% r      Radial positions [m]          {0:numel(h)-1}
-% k      Spatial frequencies [rad/m]   {pi/numel(h)*(0:numel(h)-1)}
+[r,f] = baddour_find_r_and_f(R,L)
 
-r = [0:dr:M-1];
-
-L = length(r);
-
-% k = r * 2*pi/M;
-
-k = linspace(0,6,100);
+k = 2*pi*f;
 
 a = 1;
 
@@ -28,16 +21,10 @@ semilogy(k,Y)
 hold all;
 
 size(y)
-size(r)
-size(k)
 
 Y2 = ht(y,r,k);
 
-%%
-
 % Y3 = spatial_transform2(k./(2*pi),y,r)
-
-f = k./(2*pi);
 
 Y3 = 2* pi * spatial_transform2(f,y,r);
 
