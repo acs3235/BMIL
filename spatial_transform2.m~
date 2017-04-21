@@ -1,5 +1,0 @@
-function R = spatial_transform2(f, refl, distance)
-
-for i = 1:length(f) 
-    R(i) = cumtrapz(distance .* besselj(0,2*pi*f(i)*distance) .* refl * dr);
-end
