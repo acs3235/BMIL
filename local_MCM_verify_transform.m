@@ -18,15 +18,15 @@ clear all; close all; clc
 % For now, we pass in gamma as if it were mua_v
 
 %% Constants
-dr      = 0.009; %mm
-Ndr     = round(6/dr);
+dr      = 0.0009; %mm
+Ndr     = 668;
 s		= 0.1;     % Source Radius [mm]
 g       = 0.8;      % scattering anisotropy
 
 dr_cm = dr/10;
 s_cm = s/10;
 
-f = [0:.02:1];
+
 
 %% Parameters (musp gamma muad th)
 % musp_v = 1;  % reduced scattering cm^-1
@@ -75,13 +75,21 @@ for iteration = 1:length(l_stars)
 
     refl = import_from_mco(filename).';
     
-    refl = refl(1:end-1)
-    distance_cm = [0:Ndr-1] * dr_cm
+    refl = refl(1:Ndr-1)
+    distance_cm = [0:Ndr-2] * dr_cm
     
     length(distance_cm)
     length(refl)
+    
+    distance_mm = distance_cm * 10;
+    
+    f = distance_mm./(Ndr * dr^2);
+    
+    size(f)
+    size(refl)
+    size(distance_mm)
 
-    RsMC = spatial_transform2(f, refl, distance_cm * 10)
+    RsMC = 2* pi * spatial_transform2(f, refl, distance_mm)
     %RsMC = ht(refl, distance_cm*10, f*2*pi)./(2*pi)
 
     %Plot reflectance vs. distance
