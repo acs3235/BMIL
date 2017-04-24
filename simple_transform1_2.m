@@ -1,6 +1,6 @@
 clear all; close all; clc
 
-M = 500;
+M = 100;
 dr = .1;
 
 % r      Radial positions [m]          {0:numel(h)-1}
@@ -10,9 +10,9 @@ r = [0:dr:M-1];
 
 L = length(r);
 
-% k = r * 2*pi/M;
+k = r * 2*pi/M;
 
-k = linspace(0,6,100);
+k = linspace(0,6,10);
 
 a = 1;
 
@@ -50,3 +50,5 @@ semilogy(k,Y3)
 %semilogy(k,Y4)
 
 legend('theory','online code', 'my code')
+
+k

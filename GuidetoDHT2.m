@@ -1,30 +1,22 @@
 clear all; close all; clc
 %{
-
     This script demonstrates how to use the discrete hankel transform 
     
-
     The discrete transform is performed on a set of N-1 points 
-
     The hankel transform is of order "n"
-
     Two cases are demonstrated in this script: the forward and inverse
     transform
-
 _______________________________________________________________________
 Copyright (c) 2015, Ugo Chouinard
 All rights reserved.
-
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
-
     * Redistributions of source code must retain the above copyright
       notice, this list of conditions and the following disclaimer.
     * Redistributions in binary form must reproduce the above copyright
       notice, this list of conditions and the following disclaimer in
       the documentation and/or other materials provided with the distribution
-
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -43,7 +35,7 @@ ________________________________________________________________________
 %cases, the bessel zeros will also be used in both cases
 
 n=0; %order
-N=1000; %number of points
+N=556; %number of points
 
 %the first step is to create a vector of bessel zeroes that will be used
 %at multiples places in the code with "besselzero"
@@ -65,7 +57,7 @@ yMatrix=YmatrixAssembly(n,N,zeros);
 
 
 % let's define the space limitation. 
-R=30; 
+R=150; 
 
 
 %the function that has to be transformed needs to be discretized at
@@ -80,15 +72,12 @@ samplePointsSpaceDomain=spaceSampler(R, zeros);
 % f(r)=sin(a*r)/(a*r)
 
 %let's take an arbitrary factor a;
-a=1;
+a=5;
 
 
 %then the discrete function is:
-f=exp(-a * samplePointsSpaceDomain);
+f=exp(-a*samplePointsSpaceDomain(:));
 
-size(f)
-
-%%
 
 %in order to perform the transform, the discrete function has to be a 
 %column vector 
@@ -110,69 +99,8 @@ samplePointsFrequencyDomain=freqSampler(R,zeros);
 figure()
 semilogy(samplePointsFrequencyDomain,Ftransformed);
 
-k = samplePointsFrequencyDomain .* 2*pi;
+k = samplePointsFrequencyDomain(:).*2*pi;
 Y = 2 * pi * a./((k.^2 + a^2).^(3/2));
+
 hold all;
 semilogy(samplePointsFrequencyDomain,Y);
-
-
-
-% %%
-% 
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 
-% %{
-%  Case 2: Inverse Transform
-% %}
-% 
-% 
-% %in the case of the inverse transform, the function is limited in the
-% %frequency domain by "W"
-% 
-% W=30; 
-% 
-% %the sampling is then performed using the "freqSampler" function. However
-% %the frequency limit "W" has to be transformed to "R" by:
-% 
-% R=zeros(N)/W;
-% 
-% frequencySamplePoints=freqSampler(R,zeros);
-% 
-% 
-% %the discrete function is then given by:
-% 
-% F=  (frequencySamplePoints<a).*(((frequencySamplePoints./a).^n).*cos(n*pi/2)./ ...
-%     (a^2.*sqrt(1-frequencySamplePoints.^2./a^2).*(1+sqrt(1-frequencySamplePoints.^2/a^2)).^n))+ ...
-%     (frequencySamplePoints>a).*((sin(n.*asin(a./frequencySamplePoints)))./(a^2.*sqrt(frequencySamplePoints.^2./a^2-1)));
-%     
-% %the scaling factor for a frequency limited function while performing a
-% %IDHT is given by:
-% 
-% 
-% scalingFactorFreq=1;
-% 
-% %the inverse transform is then given by:
-% 
-% fTransformed=yMatrix*F(:)*scalingFactorFreq;
-% 
-% 
-% %and the corresponding sample points in the space domain are given by:
-% 
-% spaceSamplePoints=spaceSampler(R,zeros);
-% 
-% 
-% %the result can be seen by:
-% 
-% figure()
-% plot(spaceSamplePoints,fTransformed)
-% 
-% %% Compare DHT computed results with continuous function
-% %Check results for forward transform
-% figure()
-% plot(spaceSamplePoints,fTransformed,samplePointsSpaceDomain,f)
-% legend('IDHT computed function','continuous function')
-% 
-% %Check results for inverse transform
-% figure()
-% plot(samplePointsFrequencyDomain,Ftransformed,frequencySamplePoints,F);
-% legend('DHT computed function','continuous function')

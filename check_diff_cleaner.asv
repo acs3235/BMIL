@@ -16,7 +16,7 @@ clear all; close all; clc
 
 
 %% Constants
-dr      = 0.09 / 10; %mm
+dr      = 0.09 * 10; %mm
 
 Ndr     = 10;
 s		= 0.1;     % Source Radius [mm]
@@ -111,5 +111,4 @@ copyobj(L,findobj(2,'type','axes'));
 
 %axis([0 1 .01 1])
 
-distance_mm(1)
 

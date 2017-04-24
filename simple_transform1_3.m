@@ -1,7 +1,7 @@
 clear all; close all; clc
 
-R = 20;
-L = 500;
+R = 500;
+L = 1000;
 
 [r,f] = baddour_find_r_and_f(R,L)
 

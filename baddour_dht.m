@@ -1,7 +1,7 @@
 function Ftransformed = baddour_dht(R,f) 
 
 n=1; %order
-N=len(f)
+N=length(f)
 
 %the first step is to create a vector of bessel zeroes that will be used
 %at multiples places in the code with "besselzero"
@@ -22,7 +22,10 @@ yMatrix=YmatrixAssembly(n,N,zeros);
 
 scalingFactor=R^2/zeros(N); %space limited function scaling factor
 
+shape(yMatrix)
+shape(f(:))
+shape(scalingFactor)
 
 %the transform is then performed by:
-Ftransformed=yMatrix*f(:)*scalingFactor;
+Ftransformed=yMatrix*f(:).'*scalingFactor;
 
