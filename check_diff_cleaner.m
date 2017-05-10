@@ -16,14 +16,17 @@ clear all; close all; clc
 
 
 %% Constants
-dr      = 0.09 / 10; %mm
+dr      = 0.05; %mm
 
-Ndr     = 10;
+Ndr     = 10000*2;
 s		= 0.1;     % Source Radius [mm]
-g       = 0.71;      % scattering anisotropy
+%g       = 0.71;      % scattering anisotropy
+g = 0.71;
 
 dr_cm = dr/10;
 s_cm = s/10;
+
+f = linspace(0,10,100)
 
 
 
@@ -58,13 +61,16 @@ for iteration = 1:length(l_stars)
 
 %    f = 1 /(Ndr * dr) * [0:Ndr - 1];
     
-    [distance_cm,refl] = MCMLr_r(mu_a_cm,0,musp_v_cm,0,g,dr_cm,Ndr);
+    [distance_cm_temp,refl_temp] = MCMLr_r(mu_a_cm,0,musp_v_cm/(1-g),0,g,dr_cm,Ndr);
+    
+    refl = refl_temp(1:end-1);
+    distance_cm = distance_cm_temp(1:end-1);
     
     %Plot R vs. d
     figure(3)
     distance_mm = distance_cm * 10;
     %f = 2*pi /(Ndr) * distance_mm;
-    f = distance_mm./(Ndr * dr^2);
+    %f = distance_mm./(Ndr * dr^2);
     
     
     
@@ -75,7 +81,7 @@ for iteration = 1:length(l_stars)
 
 
     %Calculate RsMC
-    RsMC = 2*pi*spatial_transform2(f, refl, distance_cm * 10);
+    RsMC = 2*pi*spatial_transform2(f, refl, distance_cm);
 %   RsMC = ht(refl,distance_cm * 10,2*pi*f)./(2*pi);
 
     
@@ -91,7 +97,7 @@ for iteration = 1:length(l_stars)
     hold all;
     
     figure(1)
-    semilogy(f,RsMC)
+    semilogy(f/10,RsMC)
     hold all;
 end
 
@@ -109,7 +115,7 @@ ylabel('Reflection FM')
 L = findobj(1,'type','line');
 copyobj(L,findobj(2,'type','axes'));
 
-%axis([0 1 .01 1])
+axis([0 1 .01 1])
 
 distance_mm(1)
 

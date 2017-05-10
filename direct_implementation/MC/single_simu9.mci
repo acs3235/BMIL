@@ -1,0 +1,16 @@
+#File created automatically by create_MCML_input_file...
+
+1.0			# file version
+1			# Number of runs
+
+### Specify data for run 1
+single_simu9.mco A		# output filename, ASCII/Binary
+1000000			# No. of photons
+0.001 0.005		# dz, dr
+10000 600 30		# No. of dz, dr & da
+
+1			# No. of layers
+1.000000		# n for medium above
+#n mua mus g d		# One line for each layer
+1 0.08 9.7 0.95 10	# layer 1
+1.000000		# n for medium below

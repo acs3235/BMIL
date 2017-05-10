@@ -16,22 +16,25 @@ clear all; close all; clc
 
 
 %% Constants
-dr      = 0.09 * 10; %mm
+dr      = 0.09; %mm
 
-Ndr     = 10;
+Ndr     = 10000;
 s		= 0.1;     % Source Radius [mm]
-g       = 0.71;      % scattering anisotropy
+%g       = 0.71;      % scattering anisotropy
+g = 0.71;
 
 dr_cm = dr/10;
 s_cm = s/10;
 
+f = linspace(0,1,100)
 
 
 
 
-l_stars = [0.25 0.5 1 2 4];
 
-% l_stars = 0.25;
+%l_stars = [0.25 0.5 1 2 4];
+
+ l_stars = 0.25;
 
 
 %initialize a file where you give all the row names
@@ -45,11 +48,13 @@ RsFM_all = [];
 for iteration = 1:length(l_stars)
     
     %Find R vs. d
-    l_star = l_stars(iteration);
-    mu_a = 1/(101*l_star);
-    musp_v = 100 * mu_a;
-    mu_a_cm = mu_a*10 %mm^-1 -> cm^-1
-    musp_v_cm = musp_v*10 %mm^-1 -> cm^-1
+%     l_star = l_stars(iteration);
+%     mu_a = 1/(101*l_star);
+%     musp_v = 100 * mu_a;
+%     mu_a_cm = mu_a*10 %mm^-1 -> cm^-1
+%     musp_v_cm = musp_v*10 %mm^-1 -> cm^-1
+    mu_a_cm=0.08;
+    musp_v_cm=194;
 
 
 %     dataRr = dlmread('out.Rrc','\t',1,0);
@@ -58,13 +63,13 @@ for iteration = 1:length(l_stars)
 
 %    f = 1 /(Ndr * dr) * [0:Ndr - 1];
     
-    [distance_cm,refl] = MCMLr_r(mu_a_cm,0,musp_v_cm,0,g,dr_cm,Ndr);
+    [distance_cm,refl] = MCMLr_r(mu_a_cm,0,musp_v_cm/(1-g),0,g,dr_cm,Ndr);
     
     %Plot R vs. d
     figure(3)
     distance_mm = distance_cm * 10;
     %f = 2*pi /(Ndr) * distance_mm;
-    f = distance_mm./(Ndr * dr^2);
+    %f = distance_mm./(Ndr * dr^2);
     
     
     
@@ -75,7 +80,7 @@ for iteration = 1:length(l_stars)
 
 
     %Calculate RsMC
-    RsMC = 2*pi*spatial_transform2(f, refl, distance_cm * 10);
+    RsMC = 2*pi*spatial_transform2(f, refl, distance_cm);
 %   RsMC = ht(refl,distance_cm * 10,2*pi*f)./(2*pi);
 
     
@@ -111,4 +116,5 @@ copyobj(L,findobj(2,'type','axes'));
 
 %axis([0 1 .01 1])
 
+distance_mm(1)
 

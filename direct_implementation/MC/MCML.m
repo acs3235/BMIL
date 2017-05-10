@@ -37,7 +37,7 @@ h=create_MCML_input_file(varargin{:});
 disp('.mci file created');
 
 %if display_console~=0 %Show the console window
-dos(['/Users/andrew/Documents/BMIL/direct_implementation/MC/Mcml.exe' h.input_filename ' &']);
+dos(['Mcml.exe ' h.input_filename ' &']);
 while isempty(dir(h.output_filename))
     pause(1);
 end
